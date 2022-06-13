@@ -77,8 +77,10 @@ public class Main {
                             String buy= productMap.get(order).toString();
                             String wrtire2File = buy.substring(1,buy.indexOf(","))+"&"+orderNum+"&"+buy.substring(buy.lastIndexOf(" "),buy.length()-1).trim();
 
+                            bw5.newLine();
                             bw5.write(wrtire2File);
-                            bw.close();
+
+                            bw5.close();
                             System.out.println("Agentə alış haqqında sorğu müvəffəqiyyətlə göndərildi !");
 
 
