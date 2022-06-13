@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.sql.SQLOutput;
 import java.sql.SQLSyntaxErrorException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -27,7 +30,7 @@ public class Main {
                 usersMap.put("Agent1", "A");
                 String userLine;
                 String product;
-                BufferedReader bw = new BufferedReader(new FileReader("C:/Agent/Users.txt"));
+                BufferedReader bw = new BufferedReader(new FileReader("C:/MyAgent/Agent/Users.txt"));
                 while ((userLine = bw.readLine()) != null) {
                     usersMap.put(userLine.substring(0, userLine.indexOf("&")), userLine.substring(userLine.indexOf("&") + 1));
                 }
@@ -40,7 +43,7 @@ public class Main {
                         System.out.println("2- Diger Agentlerin mehsullarina baxış");
                         inputNum = in.nextLine();
                         if (inputNum.equals("1")) {
-                            BufferedReader bw2 = new BufferedReader(new FileReader("C:/Agent/" + username + "product.txt"));
+                            BufferedReader bw2 = new BufferedReader(new FileReader("C:/MyAgent/Agent/" + username + "product.txt"));
                             while ((product = bw2.readLine()) != null) {
                                 productList = Arrays.asList(product.split("&"));
                                 productMap.put(i, productList);
@@ -51,19 +54,32 @@ public class Main {
 
                         }else if (inputNum.equals("2")){
                             System.out.println("Mehsullarina baxmaq istədiyiniz Agenti daxil edin ");
-                            BufferedReader bw3 = new BufferedReader(new FileReader("C:/Agent/" + in.nextLine() + "product.txt"));
+                            String orderAgent = in.nextLine();
+                            BufferedReader bw3 = new BufferedReader(new FileReader("C:/MyAgent/Agent/" + orderAgent + "product.txt"));
                             productMap = new HashMap();
                             while ((product = bw3.readLine()) != null) {
                                 productList = Arrays.asList(product.split("&"));
                                 productMap.put(i, productList);
-                                System.out.println(i+" "+ productMap.get(i) );
+                                System.err.print(i+" "+ "Mehsulun adı "+ productList.get(0)  );
+                                System.err.print("  stok sayi " + productList.get(1) );
+                                System.err.println(" qiymeti " + productList.get(2));
                                 i++;
                             }
                             i=0;
                             System.out.println("Almaq istediyiniz mehsulun nomresini daxil edin ");
-                            String order = in.nextLine();
-                            System.out.println(order + " adlı məhsuldan almaq istədiyiniz miqdarı daxil edin ");
+                            int order = in.nextInt();
+                            System.out.println(productMap.get(order).toString() + " adlı məhsuldan almaq istədiyiniz miqdarı daxil edin ");
+                            in.nextLine();
                             String orderNum = in.nextLine();
+
+                            BufferedWriter bw5 = new BufferedWriter(new FileWriter("C:/MyAgent/Agent/" + username + "product.txt",true));
+
+                            String buy= productMap.get(order).toString();
+                            String wrtire2File = buy.substring(1,buy.indexOf(","))+"&"+orderNum+"&"+buy.substring(buy.lastIndexOf(" "),buy.length()-1).trim();
+
+                            bw5.write(wrtire2File);
+                            bw.close();
+                            System.out.println("Agentə alış haqqında sorğu müvəffəqiyyətlə göndərildi !");
 
 
                         }
